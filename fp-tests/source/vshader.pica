@@ -1,0 +1,265 @@
+; Example PICA200 vertex shader
+
+; Uniforms
+.fvec src1_uniform
+
+; Constants
+.constf const1(0.0, 1.0, 0.5, 2.0)
+.constf const2(1000000.0, 0.0, 0.0, 0.0)
+.alias  zeros const1.xxxx ; Vector full of zeros
+.alias  ones  const1.yyyy ; Vector full of ones
+
+.alias inf r15.x
+.alias nan r15.y
+.alias zero r15.z
+.alias one r15.w
+
+; Outputs
+.out outpos position
+.out outclr color
+
+; Inputs (defined as aliases for convenience)
+.alias inpos v0
+
+.proc main
+	; Produce a few constants useful for the tests
+	rcp r15.x, const1.x  ; .x = +inf
+	rsq r15.y, -const1.y ; .y = NaN
+	mov r15.z, const1.x  ; .z = 0
+	mov r15.w, const1.y  ; .w = 1
+
+	mov r0.x, src1_uniform.x
+	mov r14.x, zero
+
+	cmp r14.x, eq, eq, r0.x
+	ifc cmp.x
+		; Test 0: rcp(0) -> +inf
+		rcp r0.x, zero
+	.end
+
+	add r14.x, r14.x, one
+	cmp r14.x, eq, eq, r0.x
+	ifc cmp.x
+		; Test 1: rcp(+inf) -> 0
+		rcp r0.x, inf
+	.end
+
+	add r14.x, r14.x, one
+	cmp r14.x, eq, eq, r0.x
+	ifc cmp.x
+		; Test 2: rcp(NaN) -> NaN
+		rcp r0.x, nan
+	.end
+
+	add r14.x, r14.x, one
+	cmp r14.x, eq, eq, r0.x
+	ifc cmp.x
+		; Test 3: rsq(0) -> +inf
+		rsq r0.x, zero
+	.end
+
+	add r14.x, r14.x, one
+	cmp r14.x, eq, eq, r0.x
+	ifc cmp.x
+		; Test 4: rsq(1) -> x
+		rsq r0.x, one
+	.end
+
+	add r14.x, r14.x, one
+	cmp r14.x, eq, eq, r0.x
+	ifc cmp.x
+		; Test 5: rsq(-1) -> NaN
+		rsq r0.x, -one
+	.end
+
+	add r14.x, r14.x, one
+	cmp r14.x, eq, eq, r0.x
+	ifc cmp.x
+		; Test 6: rsq(+inf) -> 0
+		rsq r0.x, inf
+	.end
+
+	add r14.x, r14.x, one
+	cmp r14.x, eq, eq, r0.x
+	ifc cmp.x
+		; Test 7: rsq(-inf) -> NaN
+		rsq r0.x, -inf
+	.end
+
+	add r14.x, r14.x, one
+	cmp r14.x, eq, eq, r0.x
+	ifc cmp.x
+		; Test 8: rsq(NaN) -> NaN
+		rsq r0.x, nan
+	.end
+
+	add r14.x, r14.x, one
+	cmp r14.x, eq, eq, r0.x
+	ifc cmp.x
+		; Test 9: max(0, +inf) -> +inf
+		max r0.x, zero, inf
+	.end
+
+	add r14.x, r14.x, one
+	cmp r14.x, eq, eq, r0.x
+	ifc cmp.x
+		; Test 10: max(0, -inf) -> 0
+		max r0.x, zero, -inf
+	.end
+
+	add r14.x, r14.x, one
+	cmp r14.x, eq, eq, r0.x
+	ifc cmp.x
+		; Test 11: max(0, NaN) -> NaN
+		max r0.x, zero, nan
+	.end
+
+	add r14.x, r14.x, one
+	cmp r14.x, eq, eq, r0.x
+	ifc cmp.x
+		; Test 12: max(NaN, 0) -> 0
+		max r0.x, nan, zero
+	.end
+
+	add r14.x, r14.x, one
+	cmp r14.x, eq, eq, r0.x
+	ifc cmp.x
+		; Test 13: max(-inf, +inf) -> +inf
+		max r0.x, -inf, inf
+	.end
+
+	add r14.x, r14.x, one
+	cmp r14.x, eq, eq, r0.x
+	ifc cmp.x
+		; Test 14: min(0, +inf) -> 0
+		min r0.x, zero, inf
+	.end
+
+	add r14.x, r14.x, one
+	cmp r14.x, eq, eq, r0.x
+	ifc cmp.x
+		; Test 15: min(0, -inf) -> -inf
+		min r0.x, zero, -inf
+	.end
+
+	add r14.x, r14.x, one
+	cmp r14.x, eq, eq, r0.x
+	ifc cmp.x
+		; Test 16: min(0, NaN) -> NaN
+		min r0.x, zero, nan
+	.end
+
+	add r14.x, r14.x, one
+	cmp r14.x, eq, eq, r0.x
+	ifc cmp.x
+		; Test 17: min(NaN, 0) -> 0
+		min r0.x, nan, zero
+	.end
+
+	add r14.x, r14.x, one
+	cmp r14.x, eq, eq, r0.x
+	ifc cmp.x
+		; Test 18: min(-inf, +inf) -> -inf
+		min r0.x, -inf, inf
+	.end
+
+	add r14.x, r14.x, one
+	cmp r14.x, eq, eq, r0.x
+	ifc cmp.x
+		; Test 19: +inf - +inf -> NaN
+		add r0.x, inf, -inf
+	.end
+
+	add r14.x, r14.x, one
+	cmp r14.x, eq, eq, r0.x
+	ifc cmp.x
+		; Test 20: +inf * 0 -> 0
+		mul r0.x, inf, zero
+	.end
+
+	add r14.x, r14.x, one
+	cmp r14.x, eq, eq, r0.x
+	ifc cmp.x
+		; Test 21: 0 * +inf -> 0
+		mul r0.x, zero, inf
+	.end
+
+	add r14.x, r14.x, one
+	cmp r14.x, eq, eq, r0.x
+	ifc cmp.x
+		; Test 22: NaN * 0 -> NaN
+		mul r0.x, nan, zero
+	.end
+
+	add r14.x, r14.x, one
+	cmp r14.x, eq, eq, r0.x
+	ifc cmp.x
+		; Test 23: 0 * NaN -> NaN
+		mul r0.x, zero, nan
+	.end
+
+	add r14.x, r14.x, one
+	cmp r14.x, eq, eq, r0.x
+	ifc cmp.x
+		; Test 24: mad(+inf, 0, 1) -> 1
+		mad r0.x, inf, zero, one
+	.end
+
+	add r14.x, r14.x, one
+	cmp r14.x, eq, eq, r0.x
+	ifc cmp.x
+		; Test 25: dp4([+inf, 1, 0, 1], [0, 1, +inf, 1]) -> 2
+		dp4 r0.x, r15.xwzw, r15.zwxw
+	.end
+
+	add r14.x, r14.x, one
+	cmp r14.x, eq, eq, r0.x
+	ifc cmp.x
+		; Test 26: dp3([+inf, +inf, 0], [0, 0, +inf]) -> 0
+		dp3 r0.x, r15.xxz, r15.zzx
+	.end
+
+	add r14.x, r14.x, one
+	cmp r14.x, eq, eq, r0.x
+	ifc cmp.x
+		; Test 27: dph([+inf, +inf, +inf], [0, 0, 0, 1]) -> 1
+		dph r0.x, r15.xxx, r15.zzzw
+	.end
+
+
+	; Classify value type and output as colors:
+	; outclr.x: value is positive (x >= 0)
+	; outclr.y: value is negative (x < 0)
+	; outclr.z: value is finite   (x > -inf && x < +inf)
+	; if value is NaN, then both outclr.x and outclr.y will be false
+
+	cmp r0.xx, ge, lt, zero
+	ifc cmp.x
+		mov outclr.x, one
+	.else
+		mov outclr.x, zero
+	.end
+	ifc cmp.y
+		mov outclr.y, one
+	.else
+		mov outclr.y, zero
+	.end
+
+	mov r1.x, inf
+	mov r1.y, -inf
+	cmp r0.xx, lt, gt, r1.xy
+	ifc cmp.x && cmp.y
+		mov outclr.z, one
+	.else
+		mov outclr.z, zero
+	.end
+
+	mov outclr.w, ones
+
+	; Force the w component of inpos to be 1.0
+	mov outpos.xyz, inpos
+	mov outpos.w, ones
+
+	; We're finished
+	end
+.end
