@@ -72,6 +72,14 @@ static const Testcase tests[] = {
 	{25, num,  "dp4([...], [...]) -> 2"},
 	{26, zero, "dp3([...], [...]) -> 0"},
 	{27, one,  "dph([...], [...]) -> 1"},
+	{28, zero, "sge(0, NaN) -> 0"},
+	{29, zero, "sge(NaN, 0) -> 0"},
+	{30, zero, "sgei(0, NaN) -> 0"},
+	{31, zero, "sgei(NaN, 0) -> 0"},
+	{32, zero, "slt(0, NaN) -> 0"},
+	{33, zero, "slt(NaN, 0) -> 0"},
+	{34, zero, "slti(0, NaN) -> 0"},
+	{35, zero, "slti(NaN, 0) -> 0"},
 };
 
 static size_t tests_count = (sizeof(tests)/sizeof(tests[0]));

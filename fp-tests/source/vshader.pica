@@ -228,6 +228,61 @@
 		dph r0.x, r15.xxx, r15.zzzw
 	.end
 
+	add r14.x, r14.x, one
+	cmp r14.x, eq, eq, r0.x
+	ifc cmp.x
+		; Test 28: sge(0, NaN) -> 0
+		sge r0.x, zero, nan
+	.end
+
+	add r14.x, r14.x, one
+	cmp r14.x, eq, eq, r0.x
+	ifc cmp.x
+		; Test 29: sge(NaN, 0) -> 0
+		sge r0.x, nan, zero
+	.end
+
+	add r14.x, r14.x, one
+	cmp r14.x, eq, eq, r0.x
+	ifc cmp.x
+		; Test 30: sgei(0, NaN) -> 0
+		sgei r0.x, zero, nan
+	.end
+
+	add r14.x, r14.x, one
+	cmp r14.x, eq, eq, r0.x
+	ifc cmp.x
+		; Test 31: sgei(NaN, 0) -> 0
+		sgei r0.x, nan, zero
+	.end
+
+	add r14.x, r14.x, one
+	cmp r14.x, eq, eq, r0.x
+	ifc cmp.x
+		; Test 32: slt(0, NaN) -> 0
+		slt r0.x, zero, nan
+	.end
+
+	add r14.x, r14.x, one
+	cmp r14.x, eq, eq, r0.x
+	ifc cmp.x
+		; Test 33: slt(NaN, 0) -> 0
+		slt r0.x, nan, zero
+	.end
+
+	add r14.x, r14.x, one
+	cmp r14.x, eq, eq, r0.x
+	ifc cmp.x
+		; Test 34: slti(0, NaN) -> 0
+		slti r0.x, zero, nan
+	.end
+
+	add r14.x, r14.x, one
+	cmp r14.x, eq, eq, r0.x
+	ifc cmp.x
+		; Test 35: slti(NaN, 0) -> 0
+		slti r0.x, nan, zero
+	.end
 
 	; Classify value type and output as colors:
 	; outclr.x: value is positive (x >= 0)
