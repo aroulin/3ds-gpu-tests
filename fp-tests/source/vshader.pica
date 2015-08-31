@@ -14,6 +14,8 @@
 .alias zero r15.z
 .alias one r15.w
 
+.alias tmp_outclr r2
+
 ; Outputs
 .out outpos position
 .out outclr color
@@ -232,28 +234,41 @@
 	; outclr.y: value is negative (x < 0)
 	; outclr.z: value is finite   (x > -inf && x < +inf)
 	; if value is NaN, then both outclr.x and outclr.y will be false
+	; zero is special case { 1.0, 1.0, 1.0 }
+	; one is special case  { 0.0, 0.0, 1.0 }
 
 	cmp r0.xx, ge, lt, zero
 	ifc cmp.x
-		mov outclr.x, one
+		mov tmp_outclr.x, one
 	.else
-		mov outclr.x, zero
+		mov tmp_outclr.x, zero
 	.end
 	ifc cmp.y
-		mov outclr.y, one
+		mov tmp_outclr.y, one
 	.else
-		mov outclr.y, zero
+		mov tmp_outclr.y, zero
 	.end
 
 	mov r1.x, inf
 	mov r1.y, -inf
 	cmp r0.xx, lt, gt, r1.xy
 	ifc cmp.x && cmp.y
-		mov outclr.z, one
+		mov tmp_outclr.z, one
 	.else
-		mov outclr.z, zero
+		mov tmp_outclr.z, zero
 	.end
 
+	cmp r0.xx, eq, eq, zero
+	ifc cmp.x
+		mov tmp_outclr, ones
+	.end
+
+	cmp r0.xx, eq, eq, one
+	ifc cmp.x
+		mov tmp_outclr, const1.xxy
+	.end
+
+	mov outclr.xyz, tmp_outclr
 	mov outclr.w, ones
 
 	; Force the w component of inpos to be 1.0

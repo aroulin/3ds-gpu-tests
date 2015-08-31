@@ -39,15 +39,16 @@ struct Testcase {
 static const vec3 pinf = { 1.0f, 0.0f, 0.0f };
 static const vec3 ninf = { 0.0f, 1.0f, 0.0f };
 static const vec3 nan  = { 0.0f, 0.0f, 0.0f };
-static const vec3 num  = { 1.0f, 0.0f, 1.0f };
-static const vec3 zero = num; // TODO: Detect this
+static const vec3 num  = { 1.0f, 0.0f, 1.0f }; // Not zero nor one
+static const vec3 zero = { 1.0f, 1.0f, 1.0f };
+static const vec3 one  = { 0.0f, 0.0f, 1.0f };
 
 static const Testcase tests[] = {
 	{ 0, pinf, "rcp(0) -> +inf"},
 	{ 1, zero, "rcp(+inf) -> 0"},
 	{ 2, nan,  "rcp(NaN) -> NaN"},
 	{ 3, pinf, "rsq(0) -> +inf"},
-	{ 4, num,  "rsq(1) -> x"},
+	{ 4, one,  "rsq(1) -> 1"},
 	{ 5, nan,  "rsq(-1) -> NaN"},
 	{ 6, zero, "rsq(+inf) -> 0"},
 	{ 7, nan,  "rsq(-inf) -> NaN"},
@@ -67,10 +68,10 @@ static const Testcase tests[] = {
 	{21, zero, "0 * +inf -> 0"},
 	{22, nan,  "NaN * 0 -> NaN"},
 	{23, nan,  "0 * NaN -> NaN"},
-	{24, num,  "mad(+inf, 0, 1) -> 1"},
+	{24, one,  "mad(+inf, 0, 1) -> 1"},
 	{25, num,  "dp4([...], [...]) -> 2"},
 	{26, zero, "dp3([...], [...]) -> 0"},
-	{27, num,  "dph([...], [...]) -> 1"},
+	{27, one,  "dph([...], [...]) -> 1"},
 };
 
 static size_t tests_count = (sizeof(tests)/sizeof(tests[0]));

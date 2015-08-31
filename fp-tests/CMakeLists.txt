@@ -13,7 +13,7 @@ set(SOURCE_FILES
     source/3dmath.h
     source/gpu.c
     source/gpu.h
-    source/main.c
+    source/main.cpp
     source/vshader.pica
     README.md)
 
