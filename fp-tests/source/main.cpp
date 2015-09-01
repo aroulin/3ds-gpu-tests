@@ -80,6 +80,7 @@ static const Testcase tests[] = {
 	{33, zero, "slt(NaN, 0) -> 0"},
 	{34, zero, "slti(0, NaN) -> 0"},
 	{35, zero, "slti(NaN, 0) -> 0"},
+	{36, one, "-flr(-0.1) -> 1"},
 };
 
 static size_t tests_count = (sizeof(tests)/sizeof(tests[0]));

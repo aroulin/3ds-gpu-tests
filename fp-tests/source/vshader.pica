@@ -5,7 +5,7 @@
 
 ; Constants
 .constf const1(0.0, 1.0, 0.5, 2.0)
-.constf const2(1000000.0, 0.0, 0.0, 0.0)
+.constf const2(1000000.0, -0.1, -1.0, 0.0)
 .alias  zeros const1.xxxx ; Vector full of zeros
 .alias  ones  const1.yyyy ; Vector full of ones
 
@@ -282,6 +282,15 @@
 	ifc cmp.x
 		; Test 35: slti(NaN, 0) -> 0
 		slti r0.x, nan, zero
+	.end
+
+	add r14.x, r14.x, one
+	cmp r14.x, eq, eq, r0.x
+	ifc cmp.x
+		; Test 36: -flr(-0.1) -> 1
+		mov r0.x, const2.y ; -0.1
+		flr r0.x, r0.x
+		mul r0.x, const2.z, r0.x ; -1.0 * r0.x
 	.end
 
 	; Classify value type and output as colors:
