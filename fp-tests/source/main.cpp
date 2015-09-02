@@ -40,8 +40,8 @@ static const vec3 pinf = { 1.0f, 0.0f, 0.0f };
 static const vec3 ninf = { 0.0f, 1.0f, 0.0f };
 static const vec3 nan  = { 0.0f, 0.0f, 0.0f };
 static const vec3 num  = { 1.0f, 0.0f, 1.0f }; // Not zero nor one
-static const vec3 zero = { 1.0f, 1.0f, 1.0f };
-static const vec3 one  = { 0.0f, 0.0f, 1.0f };
+static const vec3 zero = { 1.0f, 1.0f, 0.0f };
+static const vec3 one  = { 1.0f, 1.0f, 1.0f };
 
 static const Testcase tests[] = {
 	{ 0, pinf, "rcp(0) -> +inf"},
@@ -81,6 +81,7 @@ static const Testcase tests[] = {
 	{34, zero, "slti(0, NaN) -> 0"},
 	{35, zero, "slti(NaN, 0) -> 0"},
 	{36, one, "-flr(-0.1) -> 1"},
+	{37, pinf, "rsq(rcp(-inf)) -> +inf"},
 };
 
 static size_t tests_count = (sizeof(tests)/sizeof(tests[0]));

@@ -293,6 +293,14 @@
 		mul r0.x, const2.z, r0.x ; -1.0 * r0.x
 	.end
 
+	add r14.x, r14.x, one
+	cmp r14.x, eq, eq, r0.x
+	ifc cmp.x
+		; Test 37: rsq(rcp(-inf)) -> +inf
+		rcp r0.x, -inf
+		rsq r0.x, r0.x
+	.end
+
 	; Classify value type and output as colors:
 	; outclr.x: value is positive (x >= 0)
 	; outclr.y: value is negative (x < 0)
@@ -324,12 +332,12 @@
 
 	cmp r0.xx, eq, eq, zero
 	ifc cmp.x
-		mov tmp_outclr, ones
+		mov tmp_outclr, const1.yyx
 	.end
 
 	cmp r0.xx, eq, eq, one
 	ifc cmp.x
-		mov tmp_outclr, const1.xxy
+		mov tmp_outclr, one
 	.end
 
 	mov outclr.xyz, tmp_outclr
