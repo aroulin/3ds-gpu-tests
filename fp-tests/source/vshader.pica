@@ -301,6 +301,28 @@
 		rsq r0.x, r0.x
 	.end
 
+	add r14.x, r14.x, one
+	cmp r14.x, eq, eq, r0.x
+	ifc cmp.x
+		; Test 38: exp2(-inf) -> 0
+		ex2 r0.x, -inf
+	.end
+
+	add r14.x, r14.x, one
+	cmp r14.x, eq, eq, r0.x
+	ifc cmp.x
+		; Test 39: log2(rcp(-inf)) -> -inf
+		rcp r0.x, -inf
+		lg2 r0.x, r0.x
+	.end
+
+	add r14.x, r14.x, one
+	cmp r14.x, eq, eq, r0.x
+	ifc cmp.x
+		; Test 40: log2(-1) -> NaN
+		lg2 r0.x, -one
+	.end
+
 	; Classify value type and output as colors:
 	; outclr.x: value is positive (x >= 0)
 	; outclr.y: value is negative (x < 0)

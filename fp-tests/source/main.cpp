@@ -82,6 +82,9 @@ static const Testcase tests[] = {
 	{35, zero, "slti(NaN, 0) -> 0"},
 	{36, one, "-flr(-0.1) -> 1"},
 	{37, pinf, "rsq(rcp(-inf)) -> +inf"},
+	{38, zero, "exp2(-inf) -> 0"},
+	{39, ninf, "log2(rcp(-inf)) -> -inf"},
+	{40, nan, "log2(-1) -> NaN"},
 };
 
 static size_t tests_count = (sizeof(tests)/sizeof(tests[0]));
